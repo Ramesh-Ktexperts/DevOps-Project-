@@ -12,7 +12,7 @@ print(myvpc['Vpc']['VpcId'])
 
 mysubnet = client.create_subnet(
            CidrBlock='192.168.1.0/24',
-	       VpcId=myvpc['Vpc']['VpcId'],
+	   VpcId=myvpc['Vpc']['VpcId'],
            AvailabilityZone='ap-south-1a',
            TagSpecifications=[{'ResourceType': 'subnet','Tags': [{'Key': 'Name','Value': 'MySubnet'},]},])
 print("My Subnet ID :")
@@ -20,7 +20,7 @@ print(mysubnet['Subnet']['SubnetId'])
 
 myroutetable=client.create_route_table(
              VpcId=myvpc['Vpc']['VpcId'],
-			 TagSpecifications=[{'ResourceType': 'route-table','Tags': [{'Key': 'Name','Value': 'Ktexpers-RT'},]},])
+	           TagSpecifications=[{'ResourceType': 'route-table','Tags': [{'Key': 'Name','Value': 'Ktexpers-RT'},]},])
 print("My Route Table ID :")
 print(myroutetable['RouteTable']['RouteTableId'])
 
@@ -40,6 +40,6 @@ Myigwattach=client.attach_internet_gateway(
 
 Myrtentry = client.create_route(
             DestinationCidrBlock='0.0.0.0/0',
-	        RouteTableId=myroutetable['RouteTable']['RouteTableId'],
+	    RouteTableId=myroutetable['RouteTable']['RouteTableId'],
             GatewayId=myigw['InternetGateway']['InternetGatewayId'])
 print("Route entry entered")
