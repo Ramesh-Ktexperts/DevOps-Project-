@@ -1,0 +1,61 @@
+Resources:
+    createvpc:
+      Type: AWS::EC2::VPC
+      Properties: 
+        CidrBlock: 192.168.0.0/16
+        Tags: 
+          - Key: Name
+            Value: Ktexpertsvpc   
+          
+    createsubnet: 
+      Type: AWS::EC2::Subnet
+      Properties: 
+        VpcId: 
+          Ref: createvpc
+        AvailabilityZone: ap-south-1a
+        CidrBlock: 192.168.1.0/24
+        Tags: 
+          - Key: Name
+            Value: ktexpertssubnet
+  
+    createroutetable:
+      Type: AWS::EC2::RouteTable
+      Properties: 
+        VpcId: 
+          Ref: createvpc
+        Tags: 
+          - Key: Name
+            Value: ktexpertsRT   
+          
+    createigw:    
+      Type: AWS::EC2::InternetGateway
+      Properties: 
+        Tags: 
+          - Key: Name
+            Value: ktexpertsigw
+          
+    createsubnetassociation:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties: 
+        RouteTableId: 
+          Ref: createroutetable
+        SubnetId: 
+          Ref: createsubnet  
+          
+    createigwattachment:
+      Type: AWS::EC2::VPCGatewayAttachment
+      Properties: 
+        InternetGatewayId: 
+          Ref: createigw
+        VpcId: 
+          Ref: createvpc          
+        
+    createroute:
+      Type: AWS::EC2::Route
+      Properties: 
+        DestinationCidrBlock: 0.0.0.0/0
+        GatewayId: 
+          Ref: createigw
+        RouteTableId: 
+          Ref: createroutetable
+  

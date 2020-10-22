@@ -1,0 +1,63 @@
+Resources:
+    Createvpc:
+      Type: AWS::EC2::VPC
+      Properties: 
+          CidrBlock: 192.168.0.0/16
+          Tags: 
+            - Key: Name
+              Value: Myvpc1
+        
+    CreateSubnet:
+      Type: AWS::EC2::Subnet
+      Properties:
+          VpcId: 
+            Ref: Createvpc
+          AvailabilityZone: ap-south-1a
+          CidrBlock: 192.168.1.0/24
+          Tags: 
+            - Key: Name
+              Value: Mysubnet1
+          
+    CreateRoutetable:
+      Type: AWS::EC2::RouteTable
+      Properties:
+          VpcId: 
+            Ref: Createvpc
+          Tags: 
+            - Key: Name
+              Value: MyRT1
+              
+    CreateIGW:
+      Type: AWS::EC2::InternetGateway
+      Properties: 
+          Tags: 
+            - Key: Name
+              Value: MyIGW
+              
+    CreateSubnetassoc:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties: 
+          RouteTableId: 
+            Ref: CreateRoutetable
+          SubnetId:
+            Ref: CreateSubnet
+          
+    CreateIGWattachment:
+      Type: AWS::EC2::VPCGatewayAttachment
+      Properties: 
+          InternetGatewayId: 
+            Ref: CreateIGW
+          VpcId:
+            Ref: Createvpc
+            
+    CreateRoute:
+      Type: AWS::EC2::Route
+      Properties: 
+          DestinationCidrBlock: 0.0.0.0/0
+          GatewayId: 
+            Ref: CreateIGW
+          RouteTableId:
+            Ref: CreateRoutetable
+  
+          
+        
